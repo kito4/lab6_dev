@@ -29,7 +29,7 @@ public class Server {
         ServerSocket ss = null;
         try {
             ss = new ServerSocket(4234);
-            s = ss.accept();
+            s = ss.accept(); //блокирующий
             dataInputStream = new DataInputStream(s.getInputStream());
             dataOutputStream = new DataOutputStream(s.getOutputStream());
 
