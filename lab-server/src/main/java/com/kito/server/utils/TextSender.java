@@ -4,9 +4,8 @@ package com.kito.server.utils;
 
 import com.kito.server.abstractions.AbstractMessage;
 
-import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.PrintStream;
+import java.io.OutputStream;
 
 public class TextSender {
 
@@ -14,13 +13,13 @@ public class TextSender {
     public static final String ERROR_COLOR = "\u001B[31m"; //ANSI_RED
     public static final String ANSI_RESET = "\u001B[0m";
 
-    public static DataOutputStream dos;
+    public static OutputStream os;
 
 //    public static  printStream = ;
 
     public static void printText(String message) {
         try {
-            dos.writeUTF(MESSAGE_COLOR + message + ANSI_RESET);
+            os.write((MESSAGE_COLOR + message + ANSI_RESET).getBytes());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -28,7 +27,7 @@ public class TextSender {
 
     public static void printError(String message) {
         try {
-            dos.writeUTF(ERROR_COLOR + message + ANSI_RESET);
+            os.write((ERROR_COLOR + message + ANSI_RESET).getBytes());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -36,14 +35,14 @@ public class TextSender {
 
     public static void printMessage(AbstractMessage message) {
         try {
-            dos.writeUTF(message.getMessage());
+            os.write(message.getMessage().getBytes());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public static void changePrintStream(DataOutputStream newPrintStream) {
-        dos = newPrintStream;
+    public static void changePrintStream(OutputStream newPrintStream) {
+        os = newPrintStream;
     }
 
 

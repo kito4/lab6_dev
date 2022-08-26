@@ -1,9 +1,6 @@
 package com.kito.client;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.nio.ByteBuffer;
@@ -21,20 +18,20 @@ public final class Client {
 
     public static void main(String[] args) {
         try {
-            //ServerSocketChannel
-            boolean exit=false;
+
+            boolean exit = false;
             SocketChannel sock = SocketChannel.open(new InetSocketAddress("localhost", 4550));
             ByteBuffer buffer = ByteBuffer.allocate(65536);
             Scanner scanner = new Scanner(System.in);
 
-
+            //создать объект с командой и аргументами , преобразовать объект в bytebuffer end
             sock.read(buffer);
 
-            String msg = ;
+            String msg ="exit" ;
 
             System.out.println(new String(buffer.array()));
             while (true) {
-                if (msg = scanner.nextLine()){
+                if (msg == scanner.nextLine()) {
                     break;
                 }
                 buffer = ByteBuffer.wrap(scanner.nextLine().getBytes());
@@ -44,8 +41,6 @@ public final class Client {
                 System.out.println(new String(buffer.array()));
 
             }
-
-
 
 
 //            Socket sock= new Socket("localhost",4234);
@@ -69,3 +64,5 @@ public final class Client {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+}

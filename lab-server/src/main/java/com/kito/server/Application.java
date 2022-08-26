@@ -6,15 +6,15 @@ import com.kito.server.csv_parser.CSVReader;
 import com.kito.server.user_command_line.CommandListener;
 import com.kito.server.utils.TextSender;
 
-import java.io.DataInputStream;
 import java.io.FileNotFoundException;
+import java.io.InputStream;
 
 public class Application {
 
     CSVReader collectionFileReader;
     CommandListener commandListener;
 
-    public Application(DataInputStream dis) {
+    public Application(InputStream dis) {
         collectionFileReader = new CSVReader();
         commandListener = new CommandListener(dis);
     }

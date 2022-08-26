@@ -7,10 +7,7 @@ import com.kito.server.abstractions.AbstractMessage;
 import com.kito.server.utils.SmartSplitter;
 import com.kito.server.utils.TextSender;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.Arrays;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
@@ -22,6 +19,10 @@ public class CommandListener {
 
     private boolean isRunning;
     private final InputStream commandsInputStream;
+    ByteArrayOutputStream byteArrayOutputStream;
+    String message;
+    int length;
+    private byte[] buffer;
 
     /**
      * Конструктор
@@ -37,14 +38,19 @@ public class CommandListener {
      */
     public void readCommands() {
         isRunning = true;
+        buffer = new byte[65536];
         while (isRunning) {
             try {
-                String line = ((DataInputStream)commandsInputStream).readUTF();  //readUTF (done)
-                if ("exit".equals(line)) {
+
+                length = commandsInputStream.read(buffer);  //readUTF (done)
+                byteArrayOutputStream = new ByteArrayOutputStream();
+                byteArrayOutputStream.write(buffer,0,length);
+                message = byteArrayOutputStream.toString("UTF-8");
+                if ("exit".equals(message)) {
                     isRunning = false;
                     continue;
                 }
-                String[] inputString = SmartSplitter.smartSplit(line).toArray(new String[0]);
+                String[] inputString = SmartSplitter.smartSplit(message).toArray(new String[0]);
                 String commandName = inputString[0].toLowerCase();
                 String[] commandArgs = Arrays.copyOfRange(inputString, 1, inputString.length);
                 TextSender.printMessage((AbstractMessage) Config.getCommandManager().execute(commandName.toLowerCase(), commandArgs));
